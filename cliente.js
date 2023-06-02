@@ -1,5 +1,6 @@
+//const io = require('socket.io')
 const io = require('socket.io-client')
-const serverUrl = "http://192.168.1.134:4000"
+const serverUrl = "http://10.100.2.41:4000"
 const socket = io(serverUrl)
 
 // Conectar.
@@ -8,7 +9,7 @@ socket.on('connect', () => {
 
     socket.emit('signin', {
         user_name: "Mariana",
-        tournament_id: 142857,
+        tournament_id: 142857, //tournament_id: 142857,
         user_role: 'player'
     })
 })
@@ -23,6 +24,15 @@ socket.on('ready', function(data){
     var gameID = data.game_id;
     var playerTurnID = data.player_turn_id;
     var board = data.board;
+    let movement = makeMove(board, player_turn_id);
+    console.log(`Haciendo movimiento ${movement}`)
+    socket.emit("jugando", {
+        tournament_id: tournamentId,
+        player_turn_id: player_turn_id,
+        game_id: game_id,
+        movement: movement
+    });
+
   });
 
   // Finish.
